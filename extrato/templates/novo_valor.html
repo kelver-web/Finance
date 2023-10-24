@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+    <link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+
+    <div class="container">
+        <br>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong></strong>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <br>
+        <span class="fonte-destaque">Adicionar entradas/saídas</span>
+        <br><br>
+        <div class="row">
+
+            <div class="col-md-7">
+                <form action="{% url 'novo_valor' %}" method="POST" class="needs-validation" novalidate>{% csrf_token %}
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="validationCustom01" class="form-label">Valor</label>
+                            <input name="valor" type="text" class="form-control" id="validationCustom01" placeholder="Valor" required>
+                            <div class="invalid-feedback">
+                                Por favor informe um valor.
+                            </div>
+                            <div class="valid-feedback">
+                                OK
+                            </div>
+                        </div>
+
+                        <div class="col-md">
+                            <label for="validationCustom02" class="form-label">Categoria</label>
+                            <select name="categoria" class="form-select" id="validationCustom02" required>
+                                <option value="">Selecione...</option>
+                                {% for categoria in categorias %}
+                                    <option value="{{ categoria.id }}">{{ categoria }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor selecione uma categoria.
+                            </div>
+                            <div class="valid-feedback">
+                                OK
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <label for="validationCustom04" class="form-label">Descrição</label>
+                    <textarea name="descricao" class="form-control" id="validationCustom04" placeholder="Digite a sua descrição aqui" required></textarea>
+                    <div class="invalid-feedback">
+                        Por favor informe uma Descrição.
+                    </div>
+                    <div class="valid-feedback">
+                        OK
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="validationCustom05" class="form-label">Data</label>  
+                            <input name="data" type="date" class="form-control" id="validationCustom05" required>
+                            <div class="invalid-feedback">
+                                Por favor informe uma data.
+                            </div>
+                            <div class="valid-feedback">
+                                OK
+                            </div>
+                        </div>
+
+                        <div class="col-md">
+                            <label for="validationCustom06" class="form-label">Conta</label>
+                            <select name="conta" class="form-select" id="validationCustom06" required>
+                                <option value="">Escolha...</option>
+                                {% for conta in contas %}
+                                    <option value="{{ conta.id }}">{{ conta }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor informe uma conta.
+                            </div>
+                            <div class="valid-feedback">
+                                OK
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <input type="radio" name="tipo" value="E" required> <label class="positivo">Entrada</label>&nbsp;
+                    <input type="radio" name="tipo" value="S" required> <label class="negativo">Saída</label>
+                    <br>
+                    <br><br>
+                    <input type="submit" style="width:40%;" class="botao-principal">
+
+                </form>
+            </div>
+
+            <div class="col-md-8">
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

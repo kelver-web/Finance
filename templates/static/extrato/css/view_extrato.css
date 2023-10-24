@@ -1,0 +1,23 @@
+table{
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+
+}
+
+.linha{
+    height: 40px;
+    background-color: var(--dark-color);
+    padding: 20px;
+}
+
+
+td, th{
+    padding: 20px;
+}
+
+tr{
+    background-color: var(--main-color);
+
+}
+

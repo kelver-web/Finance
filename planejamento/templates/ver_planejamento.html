@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+<link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+<link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+<link href="{% static 'extrato/css/view_extrato.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+
+<div class="container">
+    <br>
+    <br>
+    <div class="row">
+        <h2 class="row d-flex justify-content-center mb-3">{{ mes }}</h2>
+        <div class="col-md-2 text-center">
+        </div>
+      
+        <div class="col-md">
+            <div class=" card bg-dark p-3">
+                <div>
+                    <h3 class="d-flex justify-content-center">Total</h3>
+                    <div class="float-md-end">
+                        <span>50,00 de 650,00</span>
+                    </div>
+                    <br>
+                    <div class="progress mb-4" style="height: 25px;">
+                        <div class="progress-bar progress-bar-striped bg-danger progress-bar progress-bar-striped progress-bar-animated" " role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                    </div>
+                    <hr class="mb-4">
+                </div>
+                {% for categoria in categorias %}
+                <p class="text-white mb-1">{{categoria}}</p>
+                <div>
+                    <span style="float: left !important;">R$ {{ categoria.total_gasto|floatformat:'2g' }}</span>
+                    <span style="float: right !important;">R$ {{ categoria.valor_planejamento|floatformat:'2g' }}</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-info progress-bar progress-bar-striped progress-bar-animated" " role="progressbar"
+                        style="width: {{ categoria.calcula_percentual_gasto_por_categoria }}%" aria-valuenow="50"
+                        aria-valuemin="0" aria-valuemax="100"><span class="text-dark">{{ categoria.calcula_percentual_gasto_por_categoria }}%</span></div>
+                </div>
+                <br>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="col-md-2 text-center">
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

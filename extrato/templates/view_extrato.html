@@ -1,0 +1,125 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+<link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+<link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+<link href="{% static 'extrato/css/view_extrato.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+<br>
+<br>
+<div class='container'>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong></strong>{{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <form action="" method="GET" class="row g-3 needs-validation" novalidate>
+        <div class="row">
+
+            <div class="col-md-4">
+                <label for="validationCustom01">Conta</label>
+                <select name="conta" class="form-select" id="validationCustom01" required>
+                    <option selected disabled value="">Escolha uma conta...</option>
+                    {% for conta in contas %}
+                    <option value="{{conta.id}}">{{conta}}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor selecione uma conta.
+                </div>
+                <div class="valid-feedback">
+                    OK
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="validationCustom0">Categoria</label>
+                <select name="categoria" class="form-select" id="validationCustom02" required>
+                    <option selected disabled value="">Escolha uma categoria...</option>
+                    {% for categoria in categorias %}
+                    <option value="{{categoria.id}}">{{categoria}}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor selecione uma categoria.
+                </div>
+                <div class="valid-feedback">
+                    OK
+                </div>
+            </div>
+
+            <div class="col-md-2 ml-2">
+                <label for="validationCustom03">Data inicial</label>
+                <input name="start_date" type="date" class="form-control" id="validationCustom03" required>
+                <div class="invalid-feedback">
+                    Por favor selecione uma data inicial.
+                </div>
+                <div class="valid-feedback">
+                    OK
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label for="validationCustom04">Data final</label>
+                <input name="end_date" type="date" class="form-control" id="validationCustom04" required>
+                <div class="invalid-feedback">
+                    Por favor selecione uma data final.
+                </div>
+                <div class="valid-feedback">
+                    OK
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info mt-4" style="width: 100%;">Filtrar</button>
+            </div>
+    </form>
+    <div class="col-md-2 d-flex justify-content-end">
+        <a href="{% url 'exportar_pdf' %}" type="button" class="btn btn-outline-primary mt-4" target="_blank">Exportar extrato</a>
+    </div>
+    <div class="col-md d-flex justify-content-end">
+        <a href="{% url 'zerar_filtro' %}" type="button"  class="btn btn-outline-secondary mt-4">Limpar Filtro</a>
+    </div>
+
+    <div class="container mt-5">
+
+        <table>
+            <tr>
+                <th>Conta</th>
+                <th>Categoria</th>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>valor</th>
+
+            </tr>
+            {% for valor in valores %}
+            <tr class="linha">
+                <td width="10%">{{valor.conta}}</td>
+                <td>{{valor.categoria}}</td>
+                <td>{{valor.data}}</td>
+                <td>
+                    {% if valor.tipo == 'S'%}
+                    <img src="{% static 'perfil/img/arrow-down.png' %}">
+                    {% else %}
+                    <img src="{% static 'perfil/img/arrow-up.png' %}">
+                    {% endif %}
+
+                </td>
+                <td>R$ {{valor.valor|floatformat:"2g"}}</td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+{% endblock %}

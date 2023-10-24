@@ -1,0 +1,175 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'head' %}
+
+<link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+<link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong></strong>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="col-md-5">
+            <p class="fonte-destaque">Suas contas</p>
+            <hr>
+
+            <div class="contas">
+
+                {% for conta in contas %}
+                <div class="lista-contas-main">
+                    <span><img width="10%" src="{{ conta.icone.url }}">&nbsp&nbsp{{ conta.apelido }}</span>
+
+                    <span class="total-conta positivo ">R$ {{ conta.valor|floatformat:"2g" }}&nbsp&nbsp&nbsp 
+                        <a href="/perfil/deletar_banco/{{conta.id}}"><img src="{% static 'perfil/img/exit.png' %}">
+                        </a></span>
+                </div>
+                <br>
+                {% endfor %}
+
+
+            </div>
+
+            <hr>
+            <span class="fonte-destaque">Total:</span>
+            <span class="positivo total-conta font-destaque">R$ {{ total_contas|floatformat:"2g" }}</span>
+        </div>
+
+        <div class="col-md-2"></div>
+
+        <div class="col-md-5">
+            <p class="fonte-destaque">Nova conta</p>
+
+            <form action="{% url 'cadastrar_banco' %}" method="POST" enctype="multipart/form-data"
+                class="row g-3 needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="col-md-12">
+                    <label for="validationCustom01" class="form-label">Apelido</label>
+                    <input type="text" class="form-control" name="apelido" id="validationCustom03" placeholder="Apelido"
+                        required>
+                    <div class="invalid-feedback">
+                        Por favor informe um apelido.
+                    </div>
+                    <div class="valid-feedback">
+                        OK
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="validationCustom02" class="form-label">Banco</label>
+                    <select class="form-select" name="banco" id="validationCustom04" required>
+                        <option selected disabled value="">Escolha...</option>
+                        <option value="NU">Nubank</option>
+                        <option value="CE">Caixa Econômica</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Por favor selecione um banco.
+                    </div>
+                    <div class="valid-feedback">
+                        OK
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="validationCustom03" class="form-label">Tipo</label>
+                    <select class="form-select" name="tipo" id="validationCustom04" required>
+                        <option selected disabled value="">Choose...</option>
+                        <option value="PF">Pessoa física</option>
+                        <option value="PJ">Pessoa jurídica</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Por favor selecione um tipo de pessoa.
+                    </div>
+                    <div class="valid-feedback">
+                        OK
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="validationCustom04" class="form-label">Valor</label>
+                    <input type="number" class="form-control" id="validationCustom03" name="valor" placeholder="Valor"
+                        required>
+                    <div class="invalid-feedback">
+                        Por favor informe um valor.
+                    </div>
+                    <div class="valid-feedback">
+                        OK
+                    </div>
+                </div>
+
+                <input for="validationCustom05" type="file" placeholder="Ícone" name="icone" required>
+                <div class="invalid-feedback">
+                    Por favor escolha um arquivo.
+                </div>
+                <div class="valid-feedback">
+                    OK
+                </div>
+
+                <div class="d-grid gap-2 col-12">
+                    <input type="submit" class="btn btn-outline-primary"></input>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-5">
+            <span class="fonte-destaque">Nova categoria</span>
+            <br><br>
+            <form action="{% url 'cadastrar_categoria' %}" method="POST" class="needs-validation" novalidate>{% csrf_token %}
+                <div class="col-md-12">
+                    <label for="validationCustom06" class="form-label">Categoria</label>
+                    <input type="text" class="form-control" name="categoria" id="validationCustom06"
+                        placeholder="Categoria" required>
+                    <div class="invalid-feedback">
+                        Por favor informe uma categoria.
+                    </div>
+                    <div class="valid-feedback">
+                        OK
+                    </div>
+                </div>
+                <br>
+                <input type="checkbox" name="essencial" value="essencial"><label class="positivo">&nbspEssencial</label>
+                <br><br>
+                <div class="d-grid gap-2 col-12">
+                    <input type="submit" class="btn btn-outline-primary" value="Adicionar"></input>
+                </div>
+                <br><br>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-md-5">
+            <span class="fonte-destaque">Suas categoria</span>
+            <br><br>
+            <div class="contas">
+
+                {% for categoria in categorias %}
+                <div class="lista-contas-main">
+                    <span>{{ categoria }}</span>
+                    <span class="total-conta"><a href="{% url 'update_categoria' categoria.id %}"><img
+                                src="{% if categoria.essencial %}{% static 'perfil/img/check.png' %} {% else %} {% static 'perfil/img/exit.png' %} {% endif %}"></a></span>
+                </div>
+                <br>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
